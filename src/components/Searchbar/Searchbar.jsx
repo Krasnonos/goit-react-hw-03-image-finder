@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { Formik } from 'formik';
 import { BsSearch } from 'react-icons/bs';
 import {
@@ -27,4 +28,8 @@ export const SeacrhBar = ({ submitForm }) => {
       </Formik>
     </Searchbar>
   );
+};
+
+SeacrhBar.propTypes = {
+  submitForm: PropTypes.func.isRequired,
 };

@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { BtnLoadMore } from './Button.styled';
 
 export const ButtonShowMore = ({ showMore }) => {
@@ -6,4 +7,8 @@ export const ButtonShowMore = ({ showMore }) => {
       Load more
     </BtnLoadMore>
   );
+};
+
+ButtonShowMore.propTypes = {
+  showMore: PropTypes.func.isRequired,
 };

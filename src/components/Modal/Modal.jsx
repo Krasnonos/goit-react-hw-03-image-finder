@@ -1,5 +1,6 @@
 import { createPortal } from 'react-dom';
 import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 import { Overlay, ModalBlock } from './Modal.styled';
 
 const rootRef = document.querySelector('#modal-root');
@@ -24,6 +25,8 @@ export class Modal extends PureComponent {
   };
 
   closeModalByEsc = e => {
+    e.preventDefault();
+
     if (e.code === 'Escape') {
       this.props.closeModal();
     }
@@ -35,7 +38,7 @@ export class Modal extends PureComponent {
         <ModalBlock>
           <img
             src={this.props.modalCard.largeImageURL}
-            alt={this.props.modalCard.tag}
+            alt={this.props.modalCard.tags}
           />
         </ModalBlock>
       </Overlay>,
@@ -44,13 +47,9 @@ export class Modal extends PureComponent {
   }
 }
 
-// export const Modal = ({ modalCard }) => {
-// return createPortal(
-//   <Overlay>
-//     <ModalBlock>
-//       <img src={modalCard.largeImageURL} alt={modalCard.tag} />
-//     </ModalBlock>
-//   </Overlay>,
-//   rootRef
-// );
-// };
+Modal.propTypes = {
+  modalCard: PropTypes.shape({
+    webformatURL: PropTypes.string.isRequired,
+    tags: PropTypes.string.isRequired,
+  }),
+};
