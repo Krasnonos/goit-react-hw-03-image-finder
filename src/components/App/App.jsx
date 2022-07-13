@@ -39,11 +39,15 @@ export class App extends PureComponent {
   }
 
   submitForm = ({ queryString }, { resetForm }) => {
+    if (!queryString.trim()) {
+      resetForm();
+      return;
+    }
     if (queryString === this.state.queryString) {
       resetForm();
       return;
     }
-    this.setState({ images: [], page: 1, queryString: queryString.trim() });
+    this.setState({ images: [], page: 1, queryString: queryString });
     resetForm();
   };
 
