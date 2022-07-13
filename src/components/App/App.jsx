@@ -11,7 +11,7 @@ export class App extends PureComponent {
   state = {
     queryString: '',
     page: 1,
-    images: null,
+    images: [],
     modalCard: null,
     status: 'idle',
     showModal: false,
@@ -24,7 +24,13 @@ export class App extends PureComponent {
       try {
         this.setState({ status: 'pending' });
         const response = await getInfoFromApi(queryString, page);
-        this.setState({ images: response, status: 'resolved' });
+        // this.setState({ images: response, status: 'resolved' });
+        this.setState(prevState => {
+          return {
+            images: [...prevState.images, ...response],
+            status: 'resolved',
+          };
+        });
       } catch (error) {
         this.setState({ status: 'rejected' });
         console.log(error);
@@ -32,8 +38,12 @@ export class App extends PureComponent {
     }
   }
 
-  submitForm = (value, { resetForm }) => {
-    this.setState({ page: 1, queryString: value.queryString });
+  submitForm = ({ queryString }, { resetForm }) => {
+    if (queryString === this.state.queryString) {
+      resetForm();
+      return;
+    }
+    this.setState({ images: [], page: 1, queryString: queryString.trim() });
     resetForm();
   };
 
@@ -62,7 +72,7 @@ export class App extends PureComponent {
         {status === 'resolved' && (
           <ImageGallery images={images} showModal={this.showModal} />
         )}
-        {status === 'resolved' && images.length === 12 && (
+        {status === 'resolved' && images.length >= 12 && (
           <ButtonShowMore showMore={this.showMore} />
         )}
         {status === 'pending' && <Loader />}
