@@ -15,6 +15,7 @@ export class App extends PureComponent {
     modalCard: null,
     status: 'idle',
     showModal: false,
+    totalHits: 0,
   };
 
   async componentDidUpdate(_, prevState) {
@@ -24,7 +25,6 @@ export class App extends PureComponent {
       try {
         this.setState({ status: 'pending' });
         const response = await getInfoFromApi(queryString, page);
-        // this.setState({ images: response, status: 'resolved' });
         this.setState(prevState => {
           return {
             images: [...prevState.images, ...response],
@@ -68,7 +68,7 @@ export class App extends PureComponent {
   };
 
   render() {
-    const { images, status, showModal, modalCard } = this.state;
+    const { images, page, status, showModal, modalCard } = this.state;
 
     return (
       <Wrap>
@@ -76,7 +76,7 @@ export class App extends PureComponent {
         {status === 'resolved' && (
           <ImageGallery images={images} showModal={this.showModal} />
         )}
-        {status === 'resolved' && images.length >= 12 && (
+        {status === 'resolved' && images.length / page === 12 && (
           <ButtonShowMore showMore={this.showMore} />
         )}
         {status === 'pending' && <Loader />}
